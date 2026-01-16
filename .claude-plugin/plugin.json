@@ -1,0 +1,9 @@
+{
+  "name": "modelscope-image-gen",
+  "version": "0.1.0",
+  "description": "ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像",
+  "author": {
+    "name": "Claude Code User"
+  },
+  "keywords": ["image-generation", "modelscope", "ai", "text-to-image"]
+}

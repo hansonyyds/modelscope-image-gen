@@ -1,0 +1,20 @@
+{
+  "single_lora": {
+    "description": "Single LoRA configuration",
+    "config": "your-lora-repo-id"
+  },
+  "multiple_loras": {
+    "description": "Multiple LoRAs with weighted sum",
+    "config": {
+      "lora-repo-id-1": 0.6,
+      "lora-repo-id-2": 0.3,
+      "lora-repo-id-3": 0.1
+    },
+    "note": "All weights must sum to 1.0, maximum 6 LoRAs"
+  },
+  "style_examples": {
+    "anime_style": "anime-style-lora-repo",
+    "realistic": "realistic-photo-lora",
+    "watercolor": "watercolor-painting-lora"
+  }
+}
