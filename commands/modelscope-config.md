@@ -1,19 +1,7 @@
 ---
 name: modelscope-config
 description: 配置 ModelScope API 设置
-argument-hint:
-  - name: api-key
-    description: ModelScope API Token
-    required: false
-  - name: default-model
-    description: 默认模型 ID
-    required: false
-  - name: default-output
-    description: 默认输出目录
-    required: false
-  - name: timeout
-    description: 轮询超时时间（秒）
-    required: false
+argument-hint: [api-key] [default-model] [default-output] [timeout]
 allowed-tools:
   - Read
   - Write

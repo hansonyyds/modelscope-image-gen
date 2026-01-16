@@ -11,7 +11,7 @@ import os
 import sys
 import time
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union, Tuple
 
 import requests
 from PIL import Image
@@ -25,15 +25,38 @@ class ModelScopeImageGenerator:
 
     BASE_URL = "https://api-inference.modelscope.cn/"
 
-    def __init__(self, config_path: str = ".claude/modelscope-image-gen.local.md"):
+    def __init__(self, config_path: Optional[str] = None):
         """Initialize with configuration from local file."""
-        self.api_key, self.config = self._load_config(config_path)
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-        }
+        # Try multiple config locations in order
+        config_candidates = []
+        if config_path:
+            config_candidates.append(config_path)
+        # Global config location
+        config_candidates.append(os.path.expanduser("~/.claude/modelscope-image-gen.local.md"))
+        # Local project config
+        config_candidates.append(".claude/modelscope-image-gen.local.md")
 
-    def _load_config(self, config_path: str) -> tuple[str, Dict[str, Any]]:
+        for candidate in config_candidates:
+            try:
+                self.api_key, self.config = self._load_config(candidate)
+                # Initialize headers after successfully loading config
+                self.headers = {
+                    "Authorization": f"Bearer {self.api_key}",
+                    "Content-Type": "application/json",
+                }
+                return
+            except (FileNotFoundError, ValueError):
+                continue
+
+        raise FileNotFoundError(
+            f"Configuration file not found in any of these locations:\n"
+            f"  - {config_path}\n"
+            f"  - {os.path.expanduser('~/.claude/modelscope-image-gen.local.md')}\n"
+            f"  - .claude/modelscope-image-gen.local.md\n"
+            "Please run /modelscope-config to set up your API token."
+        )
+
+    def _load_config(self, config_path: str) -> Tuple[str, Dict[str, Any]]:
         """Load API key and configuration from local file."""
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
@@ -63,11 +86,11 @@ class ModelScopeImageGenerator:
         self,
         prompt: str,
         model: Optional[str] = None,
-        loras: Optional[str | Dict[str, float]] = None,
+        loras: Optional[Union[str, Dict[str, float]]] = None,
         width: Optional[int] = None,
         height: Optional[int] = None,
         timeout: Optional[int] = None
-    ) -> tuple[bytes, str]:
+    ) -> Tuple[bytes, str]:
         """
         Generate an image with the given prompt.
 
@@ -108,7 +131,7 @@ class ModelScopeImageGenerator:
         # Poll for completion
         return self._poll_task(task_id, timeout)
 
-    def _poll_task(self, task_id: str, timeout: int) -> tuple[bytes, str]:
+    def _poll_task(self, task_id: str, timeout: int) -> Tuple[bytes, str]:
         """Poll task status until completion or timeout."""
         start_time = time.time()
 
@@ -124,13 +147,20 @@ class ModelScopeImageGenerator:
             result.raise_for_status()
             data = result.json()
 
-            status = data.get("status")
+            # API returns task_status, normalize to lowercase
+            status = data.get("task_status") or data.get("status")
+            if not status:
+                print(f"Debug response: {json.dumps(data, indent=2, ensure_ascii=False)}")
+                raise ValueError(f"No status field in response: {data}")
+            status = status.lower()
             print(f"Task status: {status} (elapsed: {int(elapsed)}s)")
 
-            if status == "succeeded":
-                image_url = data.get("result", {}).get("url")
-                if not image_url:
+            if status in ["succeeded", "succeed"]:
+                # API returns image URLs in output_images array
+                output_images = data.get("output_images", [])
+                if not output_images:
                     raise ValueError("No image URL in successful response")
+                image_url = output_images[0]
 
                 # Download image
                 print(f"Downloading image from: {image_url}")
@@ -143,7 +173,7 @@ class ModelScopeImageGenerator:
                 error = data.get("error", "Unknown error")
                 raise Exception(f"Generation failed: {error}")
 
-            elif status in ["pending", "running"]:
+            elif status in ["pending", "running", "processing"]:
                 time.sleep(3)
             else:
                 raise Exception(f"Unknown status: {status}")

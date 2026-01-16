@@ -1,34 +1,7 @@
 ---
 name: gen-image
 description: 使用 ModelScope API 生成 AI 图像
-argument-hint:
-  - name: prompt
-    description: 图像生成提示词（必需）
-    required: true
-  - name: model
-    description: 模型 ID，默认 "Tongyi-MAI/Z-Image-Turbo"
-    required: false
-  - name: loras
-    description: LoRA 配置（单个或多个）
-    required: false
-  - name: output
-    description: 输出目录，默认 "./generated-images/"
-    required: false
-  - name: filename
-    description: 输出文件名，默认自动生成
-    required: false
-  - name: width
-    description: 图像宽度，默认 1024
-    required: false
-  - name: height
-    description: 图像高度，默认 1024
-    required: false
-  - name: count
-    description: 生成数量，默认 1
-    required: false
-  - name: batch
-    description: 批量 prompt（换行分隔）
-    required: false
+argument-hint: <prompt> [model] [loras] [output] [filename] [width] [height] [count] [batch]
 allowed-tools:
   - Bash
   - Read
