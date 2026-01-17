@@ -1,5 +1,5 @@
 # Claude plugin local settings
-.claude/*.local.md
+*.local.md
 
 # Generated images
 generated-images/
