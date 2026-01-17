@@ -22,7 +22,7 @@ ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像。
 1. 克隆或下载此插件到本地
 2. 安装依赖：
    ```bash
-   pip install requests pillow
+   pip install requests pyyaml
    ```
 3. 配置 API Token：
    ```bash
@@ -83,7 +83,7 @@ ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像。
 
 ## 配置文件
 
-插件配置保存在 `.claude/modelscope-image-gen.local.md`：
+插件配置保存在项目根目录 `modelscope-image-gen.local.md`：
 
 ```yaml
 ---

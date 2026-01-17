@@ -14,8 +14,6 @@ from pathlib import Path
 from typing import Optional, Dict, Any, Union, Tuple
 
 import requests
-from PIL import Image
-from io import BytesIO
 import yaml
 import re
 
@@ -31,10 +29,8 @@ class ModelScopeImageGenerator:
         config_candidates = []
         if config_path:
             config_candidates.append(config_path)
-        # Global config location
-        config_candidates.append(os.path.expanduser("~/.claude/modelscope-image-gen.local.md"))
-        # Local project config
-        config_candidates.append(".claude/modelscope-image-gen.local.md")
+        # Project root config (only supported location)
+        config_candidates.append("modelscope-image-gen.local.md")
 
         for candidate in config_candidates:
             try:
@@ -49,10 +45,8 @@ class ModelScopeImageGenerator:
                 continue
 
         raise FileNotFoundError(
-            f"Configuration file not found in any of these locations:\n"
-            f"  - {config_path}\n"
-            f"  - {os.path.expanduser('~/.claude/modelscope-image-gen.local.md')}\n"
-            f"  - .claude/modelscope-image-gen.local.md\n"
+            f"Configuration file not found in project root.\n"
+            f"Expected location: modelscope-image-gen.local.md\n"
             "Please run /modelscope-config to set up your API token."
         )
 
@@ -183,8 +177,6 @@ class ModelScopeImageGenerator:
         output_dir = Path(output_path)
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        img = Image.open(BytesIO(image_data))
-
         # Generate filename if not provided
         if output_dir.suffix:
             filepath = output_dir
@@ -192,7 +184,10 @@ class ModelScopeImageGenerator:
             timestamp = int(time.time())
             filepath = output_dir / f"image_{timestamp}.png"
 
-        img.save(str(filepath))
+        # 直接写入文件，无需 PIL
+        with open(filepath, 'wb') as f:
+            f.write(image_data)
+
         print(f"Image saved to: {filepath}")
         return str(filepath)
 
