@@ -13,14 +13,14 @@ allowed-tools:
 
 ## 执行流程
 
-1. **检查配置文件**：读取 `.claude/modelscope-image-gen.local.md`
+1. **检查配置文件**：读取 `modelscope-image-gen.local.md`
 2. **更新配置**：根据用户提供的参数更新配置
 3. **保存配置**：将新配置写回文件
 4. **验证配置**：确认 API Token 有效性
 
 ## 配置文件结构
 
-配置文件位于：`.claude/modelscope-image-gen.local.md`
+配置文件位于：`modelscope-image-gen.local.md`（项目根目录）
 
 ```yaml
 ---
@@ -74,9 +74,9 @@ ModelScope API Token，必需。
 
 ## 配置文件路径
 
-使用便携路径引用：
+配置文件必须位于项目根目录：
 ```
-.claude/modelscope-image-gen.local.md
+modelscope-image-gen.local.md
 ```
 
 ## 错误处理
@@ -84,7 +84,6 @@ ModelScope API Token，必需。
 | 错误类型 | 处理方式 |
 |---------|---------|
 | 配置文件不存在 | 创建新配置文件 |
-| 目录不存在 | 创建 `.claude` 目录 |
 | Token 无效 | 提示重新输入 |
 
 ## 使用示例

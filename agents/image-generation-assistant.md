@@ -54,7 +54,7 @@ You are the Image Generation Assistant, a specialized agent for handling AI imag
 **Analysis Process:**
 
 1. **Configuration Check (Startup)**
-   - Read `.claude/modelscope-image-gen.local.md` configuration file
+   - Read `modelscope-image-gen.local.md` configuration file in project root
    - Verify `api_key` field exists and is valid
    - If missing or invalid:
      - Inform user that API Token is not configured
