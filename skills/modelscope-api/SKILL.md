@@ -5,15 +5,14 @@ description: This skill should be used when the user asks to "call ModelScope AP
 
 # ModelScope API Integration
 
-This skill provides comprehensive knowledge for integrating with ModelScope's image generation API, including authentication, async task handling, LoRA configuration, and error management.
+This skill provides comprehensive knowledge for integrating with ModelScope's image generation API, including authentication, async task handling, and error management.
 
 ## Core Concepts
 
 ModelScope provides an async image generation API that requires:
 1. API authentication via Bearer token
 2. Async task submission and polling
-3. Support for custom models and LoRA adapters
-4. Image retrieval and local storage
+3. Image retrieval and local storage
 
 ## API Endpoints
 
@@ -106,36 +105,9 @@ img.save(f"{output_dir}/{filename}.png")
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `loras` | string/object | LoRA configuration (see below) |
 | `width` | int | Image width (default: 1024) |
 | `height` | int | Image height (default: 1024) |
 | `num_inference_steps` | int | Number of inference steps |
-
-## LoRA Configuration
-
-### Single LoRA
-
-```python
-{
-    "loras": "your-lora-repo-id"
-}
-```
-
-### Multiple LoRAs
-
-```python
-{
-    "loras": {
-        "lora-repo-id-1": 0.6,
-        "lora-repo-id-2": 0.4
-    }
-}
-```
-
-**Rules:**
-- Maximum 6 LoRAs per request
-- All weight coefficients must sum to 1.0
-- LoRA IDs are ModelScope repository IDs
 
 ## Error Handling
 
@@ -175,7 +147,6 @@ The following scripts are available in this skill:
 ### Example Files
 
 Working examples in `examples/`:
-- **`lora-configs.json`** - Sample LoRA configurations
 - **`batch-prompts.txt`** - Example batch generation prompts
 
 ## Configuration Management

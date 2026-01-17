@@ -7,7 +7,7 @@ ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像。
 - **对话式图像生成**：通过自然语言描述生成图像
 - **命令接口**：提供 `/gen-image` 和 `/modelscope-config` 命令
 - **智能代理**：自动识别图像生成请求
-- **ModelScope API 集成**：支持多种模型和 LoRA 配置
+- **ModelScope API 集成**：支持多种图像生成模型
 - **批量生成**：支持批量生成多张图像
 
 ## 安装
@@ -44,7 +44,6 @@ ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像。
 **参数：**
 - `prompt` (必需): 图像生成提示词
 - `model` (可选): 模型 ID，默认 "Tongyi-MAI/Z-Image-Turbo"
-- `loras` (可选): LoRA 配置
 - `output` (可选): 输出目录，默认 "./generated-images/"
 - `filename` (可选): 输出文件名，默认自动生成
 - `width` (可选): 图像宽度，默认 1024

@@ -1,7 +1,7 @@
 ---
 name: gen-image
 description: 使用 ModelScope API 生成 AI 图像
-argument-hint: <prompt> [model] [loras] [output] [filename] [width] [height] [count] [batch]
+argument-hint: <prompt> [model] [output] [filename] [width] [height] [count] [batch]
 allowed-tools:
   - Bash
   - Read
@@ -27,10 +27,6 @@ allowed-tools:
 
 ### 可选参数
 - `model`: ModelScope 模型 ID，默认使用 "Tongyi-MAI/Z-Image-Turbo"
-- `loras`: LoRA 配置
-  - 单个 LoRA: `"loras": "<lora-repo-id>"`
-  - 多个 LoRA: `"loras": {"<lora-repo-id1>": 0.6, "<lora-repo-id2>": 0.4}`
-  - 最多 6 个 LoRA，权重系数总和必须为 1.0
 - `output`: 输出目录路径，默认 "./generated-images/"
 - `filename`: 输出文件名（不含扩展名），默认使用时间戳
 - `width`: 图像宽度，默认 1024
@@ -98,11 +94,6 @@ python "${CLAUDE_PLUGIN_ROOT}/skills/modelscope-api/scripts/image-gen.py" \
 /gen-image batch="A golden cat
 A sunset over mountains
 A futuristic cityscape"
-```
-
-### 使用 LoRA
-```
-/gen-image "A beautiful landscape" loras="your-lora-repo-id"
 ```
 
 ## 注意事项
