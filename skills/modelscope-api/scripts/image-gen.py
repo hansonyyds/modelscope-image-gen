@@ -80,7 +80,6 @@ class ModelScopeImageGenerator:
         self,
         prompt: str,
         model: Optional[str] = None,
-        loras: Optional[Union[str, Dict[str, float]]] = None,
         width: Optional[int] = None,
         height: Optional[int] = None,
         timeout: Optional[int] = None
@@ -97,15 +96,15 @@ class ModelScopeImageGenerator:
         width = width or self._get_default("default_width", 1024)
         height = height or self._get_default("default_height", 1024)
 
+        # Convert width/height to API's size format (e.g., "1024x1024")
+        size = f"{width}x{height}"
+
         # Build request payload
         payload = {
             "model": model,
             "prompt": prompt,
+            "size": size,
         }
-
-        # Add LoRA configuration if provided
-        if loras:
-            payload["loras"] = loras
 
         # Submit generation request
         print(f"Submitting image generation request: {prompt[:50]}...")
@@ -199,7 +198,6 @@ def main():
     )
     parser.add_argument("--prompt", required=True, help="Image generation prompt")
     parser.add_argument("--model", help="Model ID (default: from config or Tongyi-MAI/Z-Image-Turbo)")
-    parser.add_argument("--loras", help="LoRA configuration (single repo ID or JSON)")
     parser.add_argument("--output", default="./generated-images/", help="Output directory")
     parser.add_argument("--filename", help="Output filename (without extension)")
     parser.add_argument("--width", type=int, help="Image width")
@@ -223,7 +221,6 @@ def main():
                 image_data, task_id = generator.generate(
                     prompt=prompt,
                     model=args.model,
-                    loras=args.loras,
                     width=args.width,
                     height=args.height,
                     timeout=args.timeout
@@ -246,7 +243,6 @@ def main():
                 image_data, task_id = generator.generate(
                     prompt=args.prompt,
                     model=args.model,
-                    loras=args.loras,
                     width=args.width,
                     height=args.height,
                     timeout=args.timeout
