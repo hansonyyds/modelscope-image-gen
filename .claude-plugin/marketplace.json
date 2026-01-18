@@ -4,15 +4,15 @@
   "description": "通过自然语言对话或命令生成 AI 图像。支持 ModelScope API、批量生成、LoRA 配置和异步任务处理。",
   "version": "0.1.0",
   "author": {
-    "name": "Your Name",
-    "email": "your-email@example.com"
+    "name": "hansonyyds",
+    "email": "hansonyyds@example.com"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/modelscope-image-gen"
+    "url": "https://github.com/hansonyyds/modelscope-image-gen"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/modelscope-image-gen#readme",
+  "homepage": "https://github.com/hansonyyds/modelscope-image-gen",
   "keywords": ["image-generation", "modelscope", "ai", "text-to-image", "stable-diffusion"],
   "category": "productivity",
   "icon": "",
@@ -26,7 +26,7 @@
   },
   "requirements": {
     "python": ">=3.8",
-    "pip": ["requests", "pillow"]
+    "pip": ["requests", "pyyaml"]
   },
   "claude": {
     "minVersion": "1.0.0"
