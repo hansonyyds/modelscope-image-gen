@@ -13,14 +13,15 @@ allowed-tools:
 
 ## 执行流程
 
-1. **检查配置文件**：读取 `modelscope-image-gen.local.md`
-2. **更新配置**：根据用户提供的参数更新配置
-3. **保存配置**：将新配置写回文件
-4. **验证配置**：确认 API Token 有效性
+1. **检查配置目录**：检查 `~/.modelscope-image-gen/` 目录是否存在
+2. **创建目录（如需要）**：自动创建配置目录及父目录
+3. **读取/更新配置**：根据用户提供的参数更新配置
+4. **保存配置**：将新配置写入 `~/.modelscope-image-gen/modelscope-image-gen.local.md`
+5. **验证配置**：确认 API Token 有效性
 
 ## 配置文件结构
 
-配置文件位于：`modelscope-image-gen.local.md`（项目根目录）
+配置文件位于：`~/.modelscope-image-gen/modelscope-image-gen.local.md`
 
 ```yaml
 ---
@@ -33,6 +34,8 @@ default_height: 1024
 default_count: 1
 ---
 ```
+
+**多项目共享**: 此配置文件为全局配置，所有使用此插件的项目将共享同一配置。
 
 ## 参数说明
 
@@ -72,12 +75,34 @@ ModelScope API Token，必需。
 3. **设置默认值**：询问是否使用默认模型和输出目录
 4. **保存配置**：将配置写入文件
 
+## 从旧版本迁移
+
+如果您之前在项目根目录有 `modelscope-image-gen.local.md` 配置文件：
+
+1. 复制旧配置到全局目录：
+   ```bash
+   mkdir -p ~/.modelscope-image-gen
+   cp /path/to/your/project/modelscope-image-gen.local.md ~/.modelscope-image-gen/
+   ```
+
+2. 验证配置：
+   ```bash
+   /gen-image "test"
+   ```
+
+3. 删除旧的配置文件（可选）：
+   ```bash
+   rm /path/to/your/project/modelscope-image-gen.local.md
+   ```
+
 ## 配置文件路径
 
-配置文件必须位于项目根目录：
+配置文件保存在用户主目录下的固定位置：
 ```
-modelscope-image-gen.local.md
+~/.modelscope-image-gen/modelscope-image-gen.local.md
 ```
+
+首次配置时，目录会自动创建。
 
 ## 错误处理
 
