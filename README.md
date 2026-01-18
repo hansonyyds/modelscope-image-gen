@@ -19,20 +19,34 @@ ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像。
 
 ### 安装步骤
 
+#### 方式一：通过 Claude Code Plugin Marketplace 安装（推荐）
+
+```bash
+/plugin marketplace add hansonyyds/modelscope-image-gen
+/plugin install modelscope-image-gen@modelscope-image-gen
+```
+
+#### 方式二：手动安装
+
 1. 克隆或下载此插件到本地
 2. 安装依赖：
    ```bash
    pip install requests pyyaml
    ```
-3. 配置 API Token（首次使用会自动创建配置目录）：
-   ```bash
-   /modelscope-config
-   ```
-   配置文件保存在：`~/.modelscope-image-gen/modelscope-image-gen.local.md`
-4. 开始使用：
-   ```bash
-   /gen-image "A golden cat"
-   ```
+
+### 配置
+
+配置 API Token（首次使用会自动创建配置目录）：
+```bash
+/modelscope-config
+```
+配置文件保存在：`~/.modelscope-image-gen/modelscope-image-gen.local.md`
+
+### 开始使用
+
+```bash
+/gen-image "A golden cat"
+```
 
 ## 使用方法
 
