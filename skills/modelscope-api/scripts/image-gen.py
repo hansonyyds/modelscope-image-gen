@@ -24,53 +24,61 @@ class ModelScopeImageGenerator:
     BASE_URL = "https://api-inference.modelscope.cn/"
 
     def __init__(self, config_path: Optional[str] = None):
-        """Initialize with configuration from local file."""
-        # Try multiple config locations in order
-        config_candidates = []
-        if config_path:
-            config_candidates.append(config_path)
-        # Project root config (only supported location)
-        config_candidates.append("modelscope-image-gen.local.md")
+        """Initialize with configuration from global config directory."""
+        # Use global config directory
+        config_dir = Path.home() / ".modelscope-image-gen"
+        config_path = config_path or (config_dir / "modelscope-image-gen.local.md")
 
-        for candidate in config_candidates:
-            try:
-                self.api_key, self.config = self._load_config(candidate)
-                # Initialize headers after successfully loading config
-                self.headers = {
-                    "Authorization": f"Bearer {self.api_key}",
-                    "Content-Type": "application/json",
-                }
-                return
-            except (FileNotFoundError, ValueError):
-                continue
-
-        raise FileNotFoundError(
-            f"Configuration file not found in project root.\n"
-            f"Expected location: modelscope-image-gen.local.md\n"
-            "Please run /modelscope-config to set up your API token."
-        )
+        try:
+            self.api_key, self.config = self._load_config(str(config_path))
+            # Initialize headers after successfully loading config
+            self.headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+            }
+        except FileNotFoundError:
+            # Re-raise with context already provided by _load_config
+            raise
+        except ValueError as e:
+            raise ValueError(f"配置加载失败: {e}")
 
     def _load_config(self, config_path: str) -> Tuple[str, Dict[str, Any]]:
-        """Load API key and configuration from local file."""
+        """Load API key and configuration from global config file."""
+        config_path_obj = Path(config_path)
+
+        if not config_path_obj.exists():
+            raise FileNotFoundError(
+                f"配置文件未找到于: {config_path}\n"
+                "请运行 /modelscope-config 设置 API Token。\n"
+                "首次使用将自动创建配置目录。"
+            )
+
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
                 content = f.read()
 
             # Extract YAML frontmatter
             match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
-            if match:
-                config = yaml.safe_load(match.group(1))
-                api_key = config.get('api_key')
-                if not api_key:
-                    raise ValueError("api_key not found in configuration")
-                return api_key, config
+            if not match:
+                raise ValueError("配置文件格式无效：缺少 YAML frontmatter")
 
-            raise ValueError("Invalid configuration file format")
-        except FileNotFoundError:
-            raise FileNotFoundError(
-                f"Configuration file not found: {config_path}\n"
-                "Please run /modelscope-config to set up your API token."
+            config = yaml.safe_load(match.group(1))
+            api_key = config.get('api_key')
+            if not api_key:
+                raise ValueError("配置文件中未找到 api_key")
+
+            return api_key, config
+
+        except yaml.YAMLError as e:
+            raise ValueError(
+                f"配置文件解析失败: {e}\n"
+                "请删除配置文件后重新运行 /modelscope-config"
             )
+        except FileNotFoundError:
+            # Re-raise FileNotFoundError with our enhanced message
+            raise
+        except Exception as e:
+            raise ValueError(f"读取配置失败: {e}")
 
     def _get_default(self, key: str, default: Any = None) -> Any:
         """Get configuration value with default fallback."""
