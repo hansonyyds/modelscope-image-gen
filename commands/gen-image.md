@@ -37,7 +37,7 @@ allowed-tools:
 ## 配置检查
 
 执行前必须验证：
-1. API Token 是否已配置（检查 `modelscope-image-gen.local.md`）
+1. API Token 是否已配置（检查 `~/.modelscope-image-gen/modelscope-image-gen.local.md`）
 2. 如果未配置，提示用户运行 `/modelscope-config` 命令
 
 ## 调用图像生成脚本
