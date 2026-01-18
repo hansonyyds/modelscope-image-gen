@@ -40,7 +40,7 @@ headers = {
 }
 ```
 
-The API key is stored in `modelscope-image-gen.local.md` configuration file in the project root.
+The API key is stored in `~/.modelscope-image-gen/modelscope-image-gen.local.md` configuration file.
 
 ## Image Generation Workflow
 
@@ -151,14 +151,17 @@ Working examples in `examples/`:
 
 ## Configuration Management
 
-Read configuration from `modelscope-image-gen.local.md` in project root:
+Read configuration from `~/.modelscope-image-gen/modelscope-image-gen.local.md`:
 
 ```python
 import yaml
 import re
+from pathlib import Path
 
 def read_config():
-    config_path = "modelscope-image-gen.local.md"
+    config_dir = Path.home() / ".modelscope-image-gen"
+    config_path = config_dir / "modelscope-image-gen.local.md"
+
     with open(config_path, 'r') as f:
         content = f.read()
 
