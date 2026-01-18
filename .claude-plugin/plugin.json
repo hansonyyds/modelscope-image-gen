@@ -3,7 +3,15 @@
   "version": "0.1.0",
   "description": "ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像",
   "author": {
-    "name": "hansonyyds"
+    "name": "hansonyyds",
+    "url": "https://github.com/hansonyyds"
   },
-  "keywords": ["image-generation", "modelscope", "ai", "text-to-image"]
+  "repository": "https://github.com/hansonyyds/modelscope-image-gen",
+  "license": "MIT",
+  "keywords": [
+     "image-generation",
+     "modelscope",
+     "ai",
+     "text-to-image"
+  ]
 }
