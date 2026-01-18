@@ -24,10 +24,11 @@ ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像。
    ```bash
    pip install requests pyyaml
    ```
-3. 配置 API Token：
+3. 配置 API Token（首次使用会自动创建配置目录）：
    ```bash
    /modelscope-config
    ```
+   配置文件保存在：`~/.modelscope-image-gen/modelscope-image-gen.local.md`
 4. 开始使用：
    ```bash
    /gen-image "A golden cat"
@@ -82,8 +83,15 @@ ModelScope 图像生成插件 - 通过自然语言对话生成 AI 图像。
 
 ## 配置文件
 
-插件配置保存在项目根目录 `modelscope-image-gen.local.md`：
+插件配置保存在用户主目录的固定位置：
 
+**配置文件路径**: `~/.modelscope-image-gen/modelscope-image-gen.local.md`
+
+**首次使用**: 目录会自动创建，无需手动创建。
+
+**多项目共享**: 所有使用此插件的项目共享同一配置文件，只需配置一次。
+
+**配置格式**:
 ```yaml
 ---
 api_key: "your-modelscope-token"
@@ -100,6 +108,23 @@ default_count: 1
 
 - Tongyi-MAI/Z-Image-Turbo (默认)
 - 以及其他 ModelScope 支持的图像生成模型
+
+## 从旧版本迁移
+
+如果您之前使用的是项目级配置（项目根目录的 `modelscope-image-gen.local.md`）：
+
+1. 创建全局配置目录并复制配置：
+   ```bash
+   mkdir -p ~/.modelscope-image-gen
+   cp your-project/modelscope-image-gen.local.md ~/.modelscope-image-gen/
+   ```
+
+2. 验证配置正常工作：
+   ```bash
+   /gen-image "test prompt"
+   ```
+
+3. 可选：删除旧的配置文件
 
 ## 故障排除
 
